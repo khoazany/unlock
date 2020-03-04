@@ -39,12 +39,24 @@ contract('keyPurchaser', accounts => {
 
   describe('Single purchase / exact price', () => {
     beforeEach(async () => {
-      await keyPurchaser.initialize(lock.address, keyPrice, 0, 0, false, {
-        from: lockCreator,
-      })
+      await keyPurchaser.initialize(
+        lock.address,
+        lockCreator,
+        keyPrice,
+        0,
+        0,
+        false,
+        {
+          from: lockCreator,
+        }
+      )
     })
 
     it('purchase fails without approval', async () => {
+      await reverts(
+        keyPurchaser.readyToPurchaseFor(endUser),
+        'INSUFFICIENT_FUNDS'
+      )
       await reverts(
         keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
           from: otherAccount,
@@ -69,6 +81,10 @@ contract('keyPurchaser', accounts => {
           { from: lockCreator }
         )
         await reverts(
+          keyPurchaser.readyToPurchaseFor(endUser),
+          'PRICE_TOO_HIGH'
+        )
+        await reverts(
           keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
             from: otherAccount,
           }),
@@ -89,11 +105,20 @@ contract('keyPurchaser', accounts => {
 
         it('purchase is single use only', async () => {
           await reverts(
+            keyPurchaser.readyToPurchaseFor(endUser),
+            'SINGLE_USE_ONLY'
+          )
+          await reverts(
             keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
               from: otherAccount,
             }),
             'SINGLE_USE_ONLY'
           )
+        })
+
+        it('can calc the cost to purchase', async () => {
+          const cost = await keyPurchaser.readyToPurchaseFor(endUser)
+          assert.equal(cost, keyPrice)
         })
 
         describe('even if the key is transferred or otherwise revoked for the endUser', () => {
@@ -103,6 +128,10 @@ contract('keyPurchaser', accounts => {
 
           it('purchase is single use only', async () => {
             assert.equal(await lock.getHasValidKey(endUser), false) // sanity check
+            await reverts(
+              keyPurchaser.readyToPurchaseFor(endUser),
+              'SINGLE_USE_ONLY'
+            )
             await reverts(
               keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
                 from: otherAccount,
@@ -203,6 +232,7 @@ contract('keyPurchaser', accounts => {
           })
 
           it('Purchases fails', async () => {
+            await reverts(keyPurchaser.readyToPurchaseFor(endUser), 'stopped')
             await reverts(
               keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
                 from: otherAccount,
@@ -217,9 +247,17 @@ contract('keyPurchaser', accounts => {
 
   describe('Subscription capped by renewWindow', () => {
     beforeEach(async () => {
-      await keyPurchaser.initialize(lock.address, keyPrice, 15, 1, true, {
-        from: lockCreator,
-      })
+      await keyPurchaser.initialize(
+        lock.address,
+        lockCreator,
+        keyPrice,
+        15,
+        1,
+        true,
+        {
+          from: lockCreator,
+        }
+      )
 
       // Make first purchase
       await dai.approve(keyPurchaser.address, -1, { from: endUser })
@@ -232,6 +270,10 @@ contract('keyPurchaser', accounts => {
     })
 
     it('cannot purchase again right away', async () => {
+      await reverts(
+        keyPurchaser.readyToPurchaseFor(endUser),
+        'OUTSIDE_RENEW_WINDOW'
+      )
       await reverts(
         keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
           from: otherAccount,
@@ -255,9 +297,17 @@ contract('keyPurchaser', accounts => {
 
   describe('Subscription capped by renewMinFrequency', () => {
     beforeEach(async () => {
-      await keyPurchaser.initialize(lock.address, keyPrice, 1, 15, true, {
-        from: lockCreator,
-      })
+      await keyPurchaser.initialize(
+        lock.address,
+        lockCreator,
+        keyPrice,
+        1,
+        15,
+        true,
+        {
+          from: lockCreator,
+        }
+      )
 
       // Make first purchase
       await dai.approve(keyPurchaser.address, -1, { from: endUser })
@@ -270,6 +320,10 @@ contract('keyPurchaser', accounts => {
     })
 
     it('cannot purchase again right away', async () => {
+      await reverts(
+        keyPurchaser.readyToPurchaseFor(endUser),
+        'BEFORE_MIN_FREQUENCY'
+      )
       await reverts(
         keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
           from: otherAccount,
@@ -300,14 +354,28 @@ contract('keyPurchaser', accounts => {
         expirationDuration: 30, // 30 seconds
         from: lockCreator,
       })
-      await keyPurchaser.initialize(freeLock.address, 0, 0, 0, false, {
-        from: lockCreator,
-      })
+      await keyPurchaser.initialize(
+        freeLock.address,
+        lockCreator,
+        0,
+        0,
+        0,
+        false,
+        {
+          from: lockCreator,
+        }
+      )
+    })
+
+    it('can calc the cost to purchase', async () => {
+      const cost = await keyPurchaser.readyToPurchaseFor(endUser)
+      assert.equal(cost, 0)
     })
 
     it('purchase fails if the lock price increased', async () => {
       await freeLock.updateKeyPricing('1', dai.address, { from: lockCreator })
       await keyPurchaser.approveSpending()
+      await reverts(keyPurchaser.readyToPurchaseFor(endUser), 'PRICE_TOO_HIGH')
       await reverts(
         keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
           from: otherAccount,
@@ -328,6 +396,10 @@ contract('keyPurchaser', accounts => {
       })
 
       it('purchase is single use only', async () => {
+        await reverts(
+          keyPurchaser.readyToPurchaseFor(endUser),
+          'SINGLE_USE_ONLY'
+        )
         await reverts(
           keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
             from: otherAccount,

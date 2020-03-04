@@ -35,7 +35,7 @@ contract KeyPurchaser is Initializable, Stoppable
   bool internal disabled;
 
   // store minimal history
-  mapping(address => uint) public timeOfLastPurchase;
+  mapping(address => uint) public timestampOfLastPurchase;
 
   /**
    * @notice Called once to set terms that cannot change later on.
@@ -98,44 +98,69 @@ contract KeyPurchaser is Initializable, Stoppable
     return !stopped() && !disabled;
   }
 
+  function _readyToPurchaseFor(
+    address payable _recipient
+  ) private view
+    whenNotStopped
+    returns(uint keyPrice)
+  {
+    uint tokenCount = timestampOfLastPurchase[_recipient];
+    require(isSubscription || tokenCount == 0, 'SINGLE_USE_ONLY');
+    // `now` must be strictly larger than the timestamp of the last block
+    require(now - tokenCount >= renewMinFrequency, 'BEFORE_MIN_FREQUENCY');
+
+    if(lock.getHasValidKey(_recipient))
+    {
+      tokenCount = lock.keyExpirationTimestampFor(_recipient); // This reverts if getHasValidKey is false
+      require(tokenCount <= now || tokenCount - now <= renewWindow, 'OUTSIDE_RENEW_WINDOW');
+    }
+
+    keyPrice = lock.keyPrice();
+    if(keyPrice > 0)
+    {
+      require(keyPrice <= maxKeyPrice, 'PRICE_TOO_HIGH');
+      return keyPrice;
+    }
+  }
+
+  function readyToPurchaseFor(
+    address payable _recipient
+  ) public view
+    returns(uint keyPrice)
+  {
+    // It's okay if the lock changes tokenAddress as the ERC-20 approval is specifically
+    // the token the endUser wanted to spend
+    IERC20 token = IERC20(lock.tokenAddress());
+    keyPrice = _readyToPurchaseFor(_recipient);
+    require(token.balanceOf(_recipient) >= keyPrice, 'INSUFFICIENT_FUNDS');
+    require(token.allowance(_recipient, address(this)) >= keyPrice, 'INSUFFICIENT_FUNDS');
+  }
+
   /**
    * @notice Called by anyone to purchase or renew a key on behalf of a user.
    * The user must have ERC-20 spending approved and the purchase must meet the terms
    * defined during initialization.
    */
   function purchaseFor(
-    address payable _user,
+    address payable _recipient,
     address _referrer,
     bytes memory _data
   ) public
-    whenNotStopped()
   {
-    uint temp = timeOfLastPurchase[_user];
-    require(isSubscription || temp == 0, 'SINGLE_USE_ONLY');
-    // `now` must be strictly larger than the timestamp of the last block
-    require(now - temp >= renewMinFrequency, 'BEFORE_MIN_FREQUENCY');
-
-    if(lock.getHasValidKey(_user))
-    {
-      temp = lock.keyExpirationTimestampFor(_user); // This reverts if getHasValidKey is false
-      require(temp <= now || temp - now <= renewWindow, 'OUTSIDE_RENEW_WINDOW');
-    }
-
-    temp = lock.keyPrice();
     // It's okay if the lock changes tokenAddress as the ERC-20 approval is specifically
     // the token the endUser wanted to spend
     IERC20 token = IERC20(lock.tokenAddress());
-    if(temp > 0)
-    {
-      require(temp <= maxKeyPrice, 'PRICE_TOO_HIGH');
 
+    uint tokenCount = _readyToPurchaseFor(_recipient);
+    if(tokenCount > 0)
+    {
       // We don't need safeTransfer as if these do not work the purchase will fail
-      token.transferFrom(_user, address(this), temp);
+      token.transferFrom(_recipient, address(this), tokenCount);
       // approve is already complete
     }
 
-    lock.purchase(temp, _user, _referrer, _data);
-    timeOfLastPurchase[_user] = now;
+    lock.purchase(tokenCount, _recipient, _referrer, _data);
+    timestampOfLastPurchase[_recipient] = now;
 
     // RE events: it's not clear emitting an event adds value over the ones from purchase and the token
 
@@ -144,19 +169,19 @@ contract KeyPurchaser is Initializable, Stoppable
     // Testing shows the balance checks for this costs 1478 gas - very cheap.
 
     // Refund ETH
-    temp = address(this).balance;
-    if(temp > 0)
+    tokenCount = address(this).balance;
+    if(tokenCount > 0)
     {
-      msg.sender.sendValue(temp);
+      msg.sender.sendValue(tokenCount);
     }
 
     // Refund tokens
     if(address(token) != address(0))
     {
-      temp = token.balanceOf(address(this));
-      if(temp > 0)
+      tokenCount = token.balanceOf(address(this));
+      if(tokenCount > 0)
       {
-        token.safeTransfer(msg.sender, temp);
+        token.safeTransfer(msg.sender, tokenCount);
       }
     }
   }

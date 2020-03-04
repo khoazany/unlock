@@ -31,9 +31,17 @@ contract('keyPurchaserFactory', accounts => {
 
   it('non-lock manager cannot make a purchaser via the factory', async () => {
     await reverts(
-      factory.deployKeyPurchaser(lock.address, keyPrice, 42, 99, true, {
-        from: otherAccount,
-      }),
+      factory.deployKeyPurchaser(
+        lock.address,
+        otherAccount,
+        keyPrice,
+        42,
+        99,
+        true,
+        {
+          from: otherAccount,
+        }
+      ),
       'ONLY_LOCK_OWNER'
     )
   })
@@ -44,6 +52,7 @@ contract('keyPurchaserFactory', accounts => {
     beforeEach(async () => {
       const tx = await factory.deployKeyPurchaser(
         lock.address,
+        lockCreator,
         keyPrice,
         42,
         99,
@@ -81,6 +90,7 @@ contract('keyPurchaserFactory', accounts => {
         for (let i = 0; i < purchaserCount - 1; i++) {
           await factory.deployKeyPurchaser(
             lock.address,
+            lockCreator,
             keyPrice,
             42,
             99,
