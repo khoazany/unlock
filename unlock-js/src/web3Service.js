@@ -167,7 +167,7 @@ export default class Web3Service extends UnlockService {
     const byteCodeHash = utils.sha3(byteCode)
 
     const seed = ['ff', unlockAddress, saltHex, byteCodeHash]
-      .map(x => x.replace(/0x/, ''))
+      .map((x) => x.replace(/0x/, ''))
       .join('')
 
     const address = utils.sha3(`0x${seed}`).slice(-40)
@@ -212,7 +212,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} account
    */
   refreshAccountBalance(account) {
-    return this.getAddressBalance(account.address).then(balance => {
+    return this.getAddressBalance(account.address).then((balance) => {
       this.emit('account.updated', account, {
         balance,
       })
@@ -296,7 +296,7 @@ export default class Web3Service extends UnlockService {
       toBlock: 'latest',
       ...filter,
     })
-    events.forEach(event => {
+    events.forEach((event) => {
       this.emit('transaction.new', event.transactionHash)
     })
     return events
@@ -355,7 +355,7 @@ export default class Web3Service extends UnlockService {
   ) {
     const parser = new ethers.utils.Interface(contract.abi)
 
-    transactionReceipt.logs.forEach(log => {
+    transactionReceipt.logs.forEach((log) => {
       // ignore events not from our contract
       if (log.address !== contractAddress) return
       // For each log, let's find which event it is
@@ -625,16 +625,18 @@ export default class Web3Service extends UnlockService {
    */
   async getKeyByLockForOwner(lock, owner) {
     const lockContract = await this.getLockContract(lock)
-    return this._getKeyByLockForOwner(lockContract, owner).then(expiration => {
-      const keyPayload = {
-        lock,
-        owner,
-        expiration,
-      }
+    return this._getKeyByLockForOwner(lockContract, owner).then(
+      (expiration) => {
+        const keyPayload = {
+          lock,
+          owner,
+          expiration,
+        }
 
-      this.emit('key.updated', KEY_ID(lock, owner), keyPayload)
-      return keyPayload
-    })
+        this.emit('key.updated', KEY_ID(lock, owner), keyPayload)
+        return keyPayload
+      }
+    )
   }
 
   /**
@@ -662,12 +664,12 @@ export default class Web3Service extends UnlockService {
   }
 
   _emitKeyOwners(lock, page, keyPromises) {
-    return Promise.all(keyPromises).then(keys => {
+    return Promise.all(keyPromises).then((keys) => {
       this.emit(
         'keys.page',
         lock,
         page,
-        keys.filter(key => !!key)
+        keys.filter((key) => !!key)
       )
     })
   }
@@ -680,7 +682,7 @@ export default class Web3Service extends UnlockService {
    */
   _packageKeyholderInfo(lock, lockContract, ownerAddress) {
     return this._getKeyByLockForOwner(lockContract, ownerAddress).then(
-      expiration => {
+      (expiration) => {
         return {
           id: KEY_ID(lock, ownerAddress),
           lock,
@@ -693,11 +695,11 @@ export default class Web3Service extends UnlockService {
 
   _genKeyOwnersFromLockContractIterative(lock, lockContract, page, byPage) {
     const startIndex = page * byPage
-    return new Promise(resolve => {
-      const keyPromises = Array.from(Array(byPage).keys()).map(n => {
+    return new Promise((resolve) => {
+      const keyPromises = Array.from(Array(byPage).keys()).map((n) => {
         return lockContract.functions
           .owners(n + startIndex)
-          .then(ownerAddress => {
+          .then((ownerAddress) => {
             return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
           })
           .catch(() => {
@@ -713,14 +715,14 @@ export default class Web3Service extends UnlockService {
     return new Promise((resolve, reject) => {
       lockContract.functions
         .getOwnersByPage(page, byPage)
-        .then(ownerAddresses => {
-          const keyPromises = ownerAddresses.map(ownerAddress => {
+        .then((ownerAddresses) => {
+          const keyPromises = ownerAddresses.map((ownerAddress) => {
             return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
           })
 
           resolve(keyPromises)
         })
-        .catch(error => reject(error))
+        .catch((error) => reject(error))
     })
   }
 
@@ -739,14 +741,14 @@ export default class Web3Service extends UnlockService {
     const lockContract = await this.getLockContract(lock)
 
     this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage)
-      .then(keyPromises => {
+      .then((keyPromises) => {
         if (keyPromises.length == 0) {
           this._genKeyOwnersFromLockContractIterative(
             lock,
             lockContract,
             page,
             byPage
-          ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
+          ).then((keyPromises) => this._emitKeyOwners(lock, page, keyPromises))
         } else {
           this._emitKeyOwners(lock, page, keyPromises)
         }
@@ -757,7 +759,7 @@ export default class Web3Service extends UnlockService {
           lockContract,
           page,
           byPage
-        ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
+        ).then((keyPromises) => this._emitKeyOwners(lock, page, keyPromises))
       })
   }
 

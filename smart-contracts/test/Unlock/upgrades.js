@@ -37,7 +37,7 @@ let project
 let proxy
 let unlock
 
-contract('Unlock / upgrades', accounts => {
+contract('Unlock / upgrades', (accounts) => {
   const unlockOwner = accounts[9]
   const lockOwner = accounts[1]
   const keyOwner = accounts[2]

@@ -41,11 +41,11 @@ GlobalErrorConsumer.defaultProps = {
  * Will pass the first fatal error as props.
  * @param {*} state
  */
-export const mapStateToProps = state => {
+export const mapStateToProps = (state) => {
   if (!state.errors) {
     return {}
   }
-  const error = state.errors.find(error => error.name.startsWith('FATAL_'))
+  const error = state.errors.find((error) => error.name.startsWith('FATAL_'))
   return {
     error,
   }

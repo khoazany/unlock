@@ -13,14 +13,14 @@ export const EventLinks = ({ event }) => {
   let details = description
 
   // Clean up user-provided links
-  const sanitizedLinks = links.map(link => {
+  const sanitizedLinks = links.map((link) => {
     link.href = encodeURI(link.href)
     return link
   })
 
   if (sanitizedLinks.length) {
     details += '\n\n<strong>Event Website</strong>'
-    sanitizedLinks.forEach(link => {
+    sanitizedLinks.forEach((link) => {
       details += `\n${link.href}`
     })
   }

@@ -14,7 +14,7 @@ export const getDaysMonthsAndYears = (now, year, month) => {
   }
 
   // Years are the next 3 years
-  const years = [0, 1, 2].map(n => now.getFullYear() + n)
+  const years = [0, 1, 2].map((n) => now.getFullYear() + n)
 
   let months = Array.from(new Array(12), (val, index) => index + 1)
 
@@ -51,11 +51,8 @@ export const getDaysMonthsAndYears = (now, year, month) => {
   return [days, months, years]
 }
 
-export const getTimeString = date => {
-  let timeString = `:${date
-    .getMinutes()
-    .toString()
-    .padStart(2, '0')}`
+export const getTimeString = (date) => {
+  let timeString = `:${date.getMinutes().toString().padStart(2, '0')}`
   const hour = date.getHours()
   if (hour > 11) {
     timeString = `${hour - 12 + timeString}pm`

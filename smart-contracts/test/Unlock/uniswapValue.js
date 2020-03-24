@@ -15,7 +15,7 @@ let lock
 let token
 let exchange
 
-contract('Unlock / uniswapValue', accounts => {
+contract('Unlock / uniswapValue', (accounts) => {
   const price = '10000000000000000'
   const ethValue = '9969999900' // an arbitrary goal based on the liquidity provided for this test
 

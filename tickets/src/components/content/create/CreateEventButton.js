@@ -29,10 +29,10 @@ CreateEventButton.defaultProps = {
 export default CreateEventButton
 
 const SaveButton = styled.button`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.disabled ? 'var(--grey)' : 'var(--green)'};
 
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
 
   & :hover {

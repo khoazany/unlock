@@ -5,13 +5,13 @@ const getProxy = require('../helpers/proxy')
 
 let unlock
 
-contract('Unlock / initializers', accounts => {
+contract('Unlock / initializers', (accounts) => {
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
   })
 
   it('There is only 1 public initializer in Unlock', async () => {
-    const count = unlockContract.abi.filter(x =>
+    const count = unlockContract.abi.filter((x) =>
       x.name.toLowerCase().includes('initialize')
     ).length
     assert.equal(count, 1)

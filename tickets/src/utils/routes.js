@@ -2,7 +2,7 @@ import { LOCK_PATH_NAME_REGEXP } from '../constants'
 
 if (!global.URL) {
   // polyfill for server
-  global.URL = function() {
+  global.URL = function () {
     return {
       pathname: '',
       hash: false,
@@ -13,7 +13,7 @@ if (!global.URL) {
  * Returns a hash of lockAddress and prefix based on a path.
  * @param {*} path
  */
-export const lockRoute = path => {
+export const lockRoute = (path) => {
   // note: undocumented "feature" of the URL class is that it throws
   // if the URL is invalid. In our case, we are passing in a relative path,
   // and so it throws unless we pass in a base url. Since the base URL

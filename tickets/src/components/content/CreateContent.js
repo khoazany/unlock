@@ -64,11 +64,11 @@ export class CreateContent extends Component {
                       placeholder={lockPlaceholder}
                       className="select-container"
                       classNamePrefix="select-option"
-                      options={locks.map(savedLock => ({
+                      options={locks.map((savedLock) => ({
                         value: savedLock.address,
                         label: savedLock.name || savedLock.address,
                       }))}
-                      onChange={selectedOption => {
+                      onChange={(selectedOption) => {
                         if (selectedOption.value)
                           this.lockChanged(selectedOption.value)
                       }}
@@ -121,7 +121,7 @@ CreateContent.defaultProps = {
 
 export const mapStateToProps = ({ locks, account, event, loading }) => {
   const selectLocks = Object.values(locks).filter(
-    lock => lock.owner === account.address
+    (lock) => lock.owner === account.address
   )
 
   return {
@@ -132,9 +132,9 @@ export const mapStateToProps = ({ locks, account, event, loading }) => {
   }
 }
 
-export const mapDispatchToProps = dispatch => ({
-  addEvent: event => dispatch(addEvent(event)),
-  loadEvent: address => dispatch(loadEvent(address)),
+export const mapDispatchToProps = (dispatch) => ({
+  addEvent: (event) => dispatch(addEvent(event)),
+  loadEvent: (address) => dispatch(loadEvent(address)),
 })
 
 export default withConfig(

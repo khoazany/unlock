@@ -35,14 +35,14 @@ function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
 
 const providerMiddleware = (config: any) => {
   return ({ getState, dispatch }: { [key: string]: any }) => {
-    return function(next: any) {
+    return function (next: any) {
       // Initialize provider based on the one grabbed in the state. Fragile?
       setTimeout(() => {
         const provider = config.providers[getState().provider]
         initializeProvider(provider, dispatch)
       }, 0)
 
-      return function(action: Action) {
+      return function (action: Action) {
         if (action.type === SET_PROVIDER) {
           // Only initialize the provider if we haven't already done so.
           if (action.provider !== getState().provider) {

@@ -1,4 +1,4 @@
-module.exports = params => {
+module.exports = (params) => {
   return [
     {
       expirationDuration: 300,

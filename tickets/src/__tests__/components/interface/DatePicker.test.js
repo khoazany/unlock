@@ -20,7 +20,7 @@ jest.mock('../../../utils/dates', () => ({
 // Fake select to mock react-select
 jest.mock('react-select', () => ({ options, value, onChange, placeholder }) => {
   function handleChange(event) {
-    const option = options.find(option => {
+    const option = options.find((option) => {
       return option.value.toString() === event.currentTarget.value
     })
     onChange(option)
@@ -62,7 +62,7 @@ describe('DatePicker', () => {
 
   it('should let the user pick a year and trigger onChange', () => {
     expect.assertions(2)
-    const onChange = jest.fn(date => {
+    const onChange = jest.fn((date) => {
       expect(date.getFullYear()).toEqual(2020)
     })
     const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
@@ -75,7 +75,7 @@ describe('DatePicker', () => {
 
   it('should let the user pick a month and trigger onChange', () => {
     expect.assertions(2)
-    const onChange = jest.fn(date => {
+    const onChange = jest.fn((date) => {
       expect(date.getMonth()).toEqual(0)
     })
     const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
@@ -88,7 +88,7 @@ describe('DatePicker', () => {
 
   it('should let the user pick a day and trigger onChange', () => {
     expect.assertions(2)
-    const onChange = jest.fn(date => {
+    const onChange = jest.fn((date) => {
       expect(date.getDate()).toEqual(3)
     })
     const now = new Date('2019-03-02T00:00:00.000') // March 2nd, 2019

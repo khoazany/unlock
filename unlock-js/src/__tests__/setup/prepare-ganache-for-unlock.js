@@ -14,7 +14,7 @@ const versionName = latest
 
 const users = ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2']
 
-const log = message => {
+const log = (message) => {
   console.log(`GANACHE SETUP > ${message}`)
 }
 
@@ -34,7 +34,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
 
     // Let's transfer some Eth to users
     await Promise.all(
-      users.map(async user => {
+      users.map(async (user) => {
         await Ether.transfer(walletService.provider, 1, user, '10')
         log(`TRANSFERED 10 ETH to ${user}`)
       })
@@ -48,7 +48,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     log(`ERC20 CONTRACT DEPLOYED AT ${erc20Address}`)
     // We then transfer some ERC20 tokens to some users
     await Promise.all(
-      users.map(async user => {
+      users.map(async (user) => {
         await Erc20.transfer(
           walletService.provider,
           3,
@@ -84,7 +84,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     // Finally, deploy locks and for each of them, if it's an ERC20, approve it for locksmith purchases
     const promises = locks({
       erc20Address,
-    }).map(async lock => {
+    }).map(async (lock) => {
       const lockAddress = await walletService.createLock(lock)
       log(`${lock.name.toUpperCase()} DEPLOYED AT ${lockAddress}`)
       if (
@@ -118,7 +118,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     )
     log('NODE READY FOR UNLOCK')
   })
-  .catch(error => {
+  .catch((error) => {
     console.error(error)
     process.exit(1)
   })

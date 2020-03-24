@@ -16,17 +16,17 @@ export const addEvent = (event, token) => ({
   token,
 })
 
-export const loadEvent = address => ({
+export const loadEvent = (address) => ({
   type: LOAD_EVENT,
   address,
 })
 
-export const updateEvent = event => ({
+export const updateEvent = (event) => ({
   type: UPDATE_EVENT,
   event,
 })
 
-export const savedEvent = event => ({
+export const savedEvent = (event) => ({
   type: SAVED_EVENT,
   event,
 })

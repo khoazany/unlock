@@ -14,12 +14,12 @@ import { MONTH_NAMES } from '../../constants'
 export const getDaysMonthsAndYearsForSelect = (now, year, month) => {
   const [days, months, years] = getDaysMonthsAndYears(now, year, month)
 
-  const asOptions = array => {
-    return array.map(element => ({ value: element, label: element }))
+  const asOptions = (array) => {
+    return array.map((element) => ({ value: element, label: element }))
   }
   return {
     days: asOptions(days),
-    months: months.map(m => ({ value: m - 1, label: MONTH_NAMES[m - 1] })),
+    months: months.map((m) => ({ value: m - 1, label: MONTH_NAMES[m - 1] })),
     years: asOptions(years),
   }
 }
@@ -41,8 +41,8 @@ export default class DatePicker extends Component {
     if (disabled) {
       return
     }
-    return selected => {
-      this.setState(state => {
+    return (selected) => {
+      this.setState((state) => {
         let { date } = state
         // Change the date based on the selected value
         date[method](selected.value)
@@ -145,7 +145,7 @@ export const StyledSelect = styled(Select)`
     display: none;
   }
   .select-option__single-value {
-    color: ${props => (props.isDisabled ? 'var(--grey)' : 'var(--darkgrey)')};
+    color: ${(props) => (props.isDisabled ? 'var(--grey)' : 'var(--darkgrey)')};
     font-size: 20px;
   }
 `

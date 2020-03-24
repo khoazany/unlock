@@ -8,7 +8,7 @@ import createUnlockStore from '../../createUnlockStore'
 const store = createUnlockStore({})
 
 storiesOf('Home landing page', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('Home page', () => {
     return <HomeContent path="/" />
   })
