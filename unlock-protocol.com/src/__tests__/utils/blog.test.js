@@ -1,3 +1,5 @@
+const blog = require('../../utils/blog')
+
 const MOCK_FILE_INFO = {
   '/foo/bar/blog/test1.md': `---
 title: This is a sample post
@@ -56,7 +58,6 @@ describe('blog', () => {
 
   it('should generate a blog feed array from a set of given markdown files', () => {
     expect.assertions(4)
-    const blog = require('../../utils/blog')
     const feed = blog.generateBlogFeed('/foo/bar')
 
     expect(feed[0].slug).toEqual('test2')
@@ -67,7 +68,6 @@ describe('blog', () => {
 
   it('should generate a post pages array from a blog feed', () => {
     expect.assertions(4)
-    const blog = require('../../utils/blog')
 
     const feed = blog.generateBlogFeed('/foo/bar')
     const pages = blog.generatePostPages(feed)
@@ -80,7 +80,6 @@ describe('blog', () => {
 
   it('should generate a blog pages array from a blog feed', () => {
     expect.assertions(8)
-    const blog = require('../../utils/blog')
 
     const feed = ['post1', 'post2', 'post3', 'post4', 'post5', 'post6', 'post7']
     const pages = blog.generateBlogPages(feed.length, 2)
@@ -97,9 +96,6 @@ describe('blog', () => {
 
   it('should generate a blog index file from a blog index array', done => {
     expect.assertions(1)
-
-    const blog = require('../../utils/blog')
-
     const feed = blog.generateBlogFeed('/foo/bar')
     blog.generateBlogIndexFile('/foo/bar', feed, () => {
       expect(writtenData).toEqual(blogJson)
@@ -109,9 +105,6 @@ describe('blog', () => {
 
   it('should generate a blog RSS feed from a blog index array', done => {
     expect.assertions(6)
-
-    const blog = require('../../utils/blog')
-
     const feed = blog.generateBlogFeed('/foo/bar')
     blog.generateRSSFile(
       '/foo/bar',
@@ -144,7 +137,6 @@ describe('blog', () => {
 
   it('should combine next-provided pages and blog index pages', () => {
     expect.assertions(2)
-    const blog = require('../../utils/blog')
 
     const pages = {
       '/': { page: '/' },

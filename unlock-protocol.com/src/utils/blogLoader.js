@@ -8,6 +8,7 @@ const yamlFront = require('yaml-front-matter')
 export const loadBlogIndexFile = async (maxPosts = 10, pageNumber = 1) => {
   let index
   try {
+    /* eslint global-require: 0*/
     const response = await require('../../blog/blog.index')
     index = await JSON.parse(response.default)
   } catch (e) {
@@ -42,6 +43,7 @@ export const loadBlogIndexFile = async (maxPosts = 10, pageNumber = 1) => {
  */
 export const loadBlogPost = async slug => {
   try {
+    /* eslint global-require: 0*/
     const fileContents = await require(`../../blog/${slug}.md`) // eslint-disable-line import/no-dynamic-require
     return yamlFront.loadFront(fileContents.default)
   } catch (e) {
