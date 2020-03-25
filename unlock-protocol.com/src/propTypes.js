@@ -8,7 +8,7 @@ export const post = PropTypes.shape({
   subTitle: PropTypes.string,
   authorName: PropTypes.string,
   publishDate: PropTypes.string,
-  __content: PropTypes.string,
+  content: PropTypes.string,
 })
 
 export const slug = PropTypes.string

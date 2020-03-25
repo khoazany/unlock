@@ -1,7 +1,7 @@
 const fs = require('fs')
 const { join } = require('path')
 const yamlFront = require('yaml-front-matter')
-const rss = require('rss')
+const Rss = require('rss')
 
 /**
  * Master function that takes a base directory and returns a reverse-chronologically ordered list of blog posts,
@@ -23,7 +23,10 @@ const generateBlogFeed = basedir => {
       // Cache post metadata for feed; used in blog homepage and eventually RSS
       const post = yamlFront.loadFront(fs.readFileSync(join(blogDir, postFile)))
       post.slug = slug
-      delete post.__content // We don't need to store the content of the post here
+      /* eslint no-underscore-dangle: 0 */
+      post.content = post.__content
+      /* eslint no-underscore-dangle: 0 */
+      delete post.__content
 
       postFeed.push(post)
     }
@@ -76,13 +79,12 @@ const generateBlogPages = (numberOfPosts, postsPerPage) => {
   const pages = {}
 
   const numberOfPages = Math.ceil(numberOfPosts / postsPerPage)
-
-  Array.apply(null, Array(numberOfPages)).forEach((x, i) => {
+  for (let i = 0; i < numberOfPages; i += 1) {
     pages[`/blog/${i + 1}`] = {
       page: '/blog',
       query: { slug: `${i + 1}` },
     }
-  })
+  }
   return pages
 }
 
@@ -96,7 +98,7 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl, callback) => {
   // Build list of items that don't have future publish dates
   const now = Date.now()
 
-  const rssFeed = new rss({
+  const rssFeed = new Rss({
     title: 'Unlock Blog',
     description: "News and updates from the Web's new business model.",
     site_url: `${unlockUrl}/blog`,

@@ -62,8 +62,8 @@ describe('blog', () => {
 
     expect(feed[0].slug).toEqual('test2')
     expect(feed[1].slug).toEqual('test1')
-    expect(feed[0].__content).toEqual(undefined)
-    expect(feed[1].__content).toEqual(undefined)
+    expect(feed[0].content).toEqual(undefined)
+    expect(feed[1].content).toEqual(undefined)
   })
 
   it('should generate a post pages array from a blog feed', () => {

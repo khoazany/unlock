@@ -108,6 +108,8 @@ The Unlock team
           }))
         }
       })
+    } else {
+      this.state.becomeMember = () => {}
     }
   }
 

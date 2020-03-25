@@ -12,7 +12,7 @@ storiesOf('Blog pages', module)
       authorName: 'Alice "Storybook" Bob',
       publishDate: 'August 20, 2018',
       description: 'A test blog post for Storybook',
-      __content: `
+      content: `
 This is some sample markdown content for the purposes of displaying a blog post within Storybook. You can edit this
 markdown content within the blog post story itself.
 

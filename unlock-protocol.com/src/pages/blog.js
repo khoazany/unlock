@@ -53,7 +53,7 @@ const Blog = ({ posts, page, totalPages }) => {
             </Link>
           </Left>
         )}
-        {page != totalPages && (
+        {page !== totalPages && (
           <Right>
             <Link href={`/blog/${totalPages}`}>
               <a>Last Page →</a>
@@ -80,8 +80,9 @@ Blog.propTypes = {
 
 Blog.getInitialProps = async context => {
   const { slug } = context.query // The slug is the page number
-  const page = parseInt(slug)
-  return await prepareBlogProps(10, page)
+  const page = parseInt(slug, 10)
+  const blogProps = prepareBlogProps(10, page)
+  return blogProps
 }
 
 export default Blog

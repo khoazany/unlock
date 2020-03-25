@@ -1,6 +1,6 @@
 ---
 title: Setting Unlock’s demo free
-subTitle: Today we’re sharing the very first demo of the Unlock Protocol. 
+subTitle: Today we’re sharing the very first demo of the Unlock Protocol.
 authorName: Julien Genestoux
 publishDate: June 10, 2018
 description: Today we’re sharing the very first demo of the Unlock Protocol.
@@ -13,6 +13,6 @@ In the last couple weeks, I have shown demos of Unlock to a lot of people, with 
 
 > Unlock is a protocol which lets creators monetize their content or software. Consumers pay the creators directly in order to unlock words, images, videos or features. Here, I am taking the example of a blogger who may want to limit access to their content only to the people who have purchased a key to their lock.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/wktotzmea0E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wktotzmea0E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
 More than anything, we’d love to have your feedback, positive and negative: our opinions are strong but loosely held.

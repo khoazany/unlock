@@ -136,13 +136,13 @@ describe('Pages', () => {
         slug: 'test1',
         description: 'Test description',
         publishDate: 'November 23, 1963',
-        __content: 'Now is the limiter of this content',
+        content: 'Now is the limiter of this content',
       }
       const slug = 'test1'
       const page = rtl.render(<Post post={post} slug={slug} />)
 
       expect(pageTitle).toBeCalledWith(post.title)
-      expect(page.queryByText(post.__content)).not.toBeNull()
+      expect(page.queryByText(post.content)).not.toBeNull()
     })
 
     it('should load post details in initial props', async () => {

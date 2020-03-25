@@ -23,7 +23,7 @@ const BaseButton = ({
       onClick={e => {
         if (!disabled) return clickAction(e, action)
       }}
-      title={label || title}
+      title={label ? label : title}
       {...props}
     >
       {children}

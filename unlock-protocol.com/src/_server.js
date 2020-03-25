@@ -4,15 +4,15 @@ const { URL } = require('url')
 const next = require('next')
 const pathMatch = require('path-match')
 
-function _server(port, dev) {
-  return new Promise(async (resolve, reject) => {
+function server(port, dev) {
+  return new Promise((resolve, reject) => {
     const app = next({ dir: `${__dirname}/`, dev, quiet: true })
     const handle = app.getRequestHandler()
     const route = pathMatch()
 
-    await app.prepare()
+    app.prepare()
 
-    const server = createServer((req, res) => {
+    const httpServer = createServer((req, res) => {
       console.info(`${req.method} ${req.url} > ${res.statusCode} `)
       try {
         const parsedUrl = new URL(req.url, `http://${req.headers.host}/`)
@@ -26,10 +26,10 @@ function _server(port, dev) {
         } else if (path === 'blog') {
           const params = route('/blog/:slug')(pathname)
           if (params.slug) {
-            if (isNaN(params.slug)) {
-              app.render(req, res, '/post', Object.assign(params, query))
-            } else {
+            if (parseInt(params.slug, 0).toString() === params.slug) {
               app.render(req, res, '/blog', Object.assign(params, query))
+            } else {
+              app.render(req, res, '/post', Object.assign(params, query))
             }
           } else {
             app.render(req, res, '/blog', Object.assign(params, query))
@@ -43,9 +43,9 @@ function _server(port, dev) {
       }
     }).listen(port, err => {
       if (err) throw reject(err)
-      resolve([server, app])
+      resolve([httpServer, app])
     })
   })
 }
 
-module.exports = _server
+module.exports = server

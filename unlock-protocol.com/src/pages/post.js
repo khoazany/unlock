@@ -18,7 +18,7 @@ const Post = ({ slug, post }) => {
   const authorName = post.authorName || 'Unlock team'
   const publishDate = post.publishDate || ''
   const paywallLock = post.paywallLock || ''
-  const body = post.__content || ''
+  const body = post.content || ''
   const membersOnly = post.membersOnly || ''
   const nonMembersOnly = post.nonMembersOnly || ''
   const scripts = post.scripts || []
@@ -69,7 +69,7 @@ Post.propTypes = {
 
 Post.getInitialProps = async context => {
   const { slug } = context.query
-  return await preparePostProps(slug)
+  return preparePostProps(slug)
 }
 
 export default Post
