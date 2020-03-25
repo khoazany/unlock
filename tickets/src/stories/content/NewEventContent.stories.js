@@ -31,10 +31,10 @@ Join us for an hour or two of fine entertainment.`,
 }
 
 storiesOf('New Event RSVP page', module)
-  .addDecorator((getStory) => (
+  .addDecorator(getStory => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
-  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Event RSVP page with an unknown status (loading)', () => {
     return (
       <ConfigProvider value={config}>

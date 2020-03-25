@@ -8,7 +8,7 @@ import TimePicker from '../../../components/interface/TimePicker'
 // Fake select to mock react-select
 jest.mock('react-select', () => ({ options, value, onChange, placeholder }) => {
   function handleChange(event) {
-    const option = options.find((option) => {
+    const option = options.find(option => {
       return option.value.toString() === event.currentTarget.value
     })
     onChange(option)

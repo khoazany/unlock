@@ -171,7 +171,7 @@ describe('v10', () => {
           setupSuccess()
 
           walletService._handleMethodCall = jest.fn(
-            async (sendTransactionPromise) => {
+            async sendTransactionPromise => {
               const result = await sendTransactionPromise
               await result.wait()
               return Promise.resolve(transaction.hash)
@@ -209,7 +209,7 @@ describe('v10', () => {
           setupSuccess()
 
           walletService._handleMethodCall = jest.fn(
-            async (sendTransactionPromise) => {
+            async sendTransactionPromise => {
               const result = await sendTransactionPromise
               await result.wait()
               return Promise.resolve(transaction.hash)
@@ -233,7 +233,7 @@ describe('v10', () => {
         setupSuccess()
 
         walletService._handleMethodCall = jest.fn(
-          async (sendTransactionPromise) => {
+          async sendTransactionPromise => {
             const result = await sendTransactionPromise
             await result.wait()
             return Promise.resolve(transaction.hash)
@@ -268,7 +268,7 @@ describe('v10', () => {
       // We should have great coverage for `_handleMethodCall` and then confidently
       // mock its behavior inside of each function which actually calls it
       walletService._handleMethodCall = jest.fn(
-        async (sendTransactionPromise) => {
+        async sendTransactionPromise => {
           const result = await sendTransactionPromise
           await result.wait()
           return Promise.resolve(transaction.hash)

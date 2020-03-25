@@ -6,7 +6,7 @@ export default class EventService {
     this.host = host
   }
 
-  genAuthorizationHeader = (token) => {
+  genAuthorizationHeader = token => {
     return { Authorization: ` Bearer ${token}` }
   }
 

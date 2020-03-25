@@ -27,13 +27,13 @@ const create = () => {
   }
   const next = jest.fn()
   const handler = eventMiddleware(config)(store)
-  const invoke = (action) => handler(next)(action)
+  const invoke = action => handler(next)(action)
   return { next, invoke, store }
 }
 
 let mockeventService = {}
 jest.mock('../../services/eventService', () => {
-  return function () {
+  return function() {
     return mockeventService
   }
 })

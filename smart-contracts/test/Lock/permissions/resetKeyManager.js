@@ -10,7 +10,7 @@ let lock
 let lockCreator
 let lockAddress
 
-contract('Permissions / resetKeyManager', (accounts) => {
+contract('Permissions / resetKeyManager', accounts => {
   lockCreator = accounts[0]
   let keyManager
   let iD

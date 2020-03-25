@@ -13,7 +13,7 @@ describe('StorageService', () => {
   })
 
   describe('getLockAddressesForUser', () => {
-    it('should retrieve the list of locks for a user and emit emit success.getLockAddressesForUser', (done) => {
+    it('should retrieve the list of locks for a user and emit emit success.getLockAddressesForUser', done => {
       expect.assertions(2)
       const user = '0xabc'
       const locks = [
@@ -38,8 +38,8 @@ describe('StorageService', () => {
         },
       })
 
-      storageService.on(success.getLockAddressesForUser, (addresses) => {
-        expect(addresses).toEqual(locks.map((lock) => lock.address))
+      storageService.on(success.getLockAddressesForUser, addresses => {
+        expect(addresses).toEqual(locks.map(lock => lock.address))
         done()
       })
 
@@ -48,7 +48,7 @@ describe('StorageService', () => {
       expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/${user}/locks`)
     })
 
-    it('should emit failure.getLockAddressesForUser if the data does not have the expected format', (done) => {
+    it('should emit failure.getLockAddressesForUser if the data does not have the expected format', done => {
       expect.assertions(2)
       const user = '0xabc'
       axios.get.mockReturnValue({
@@ -57,7 +57,7 @@ describe('StorageService', () => {
 
       storageService.getLockAddressesForUser(user)
 
-      storageService.on(failure.getLockAddressesForUser, (error) => {
+      storageService.on(failure.getLockAddressesForUser, error => {
         expect(error).toBe('We could not retrieve lock addresses for that user')
         done()
       })
@@ -65,7 +65,7 @@ describe('StorageService', () => {
       expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/${user}/locks`)
     })
 
-    it('should emit failure.getLockAddressesForUser if there was an error', (done) => {
+    it('should emit failure.getLockAddressesForUser if there was an error', done => {
       expect.assertions(2)
       const user = '0xabc'
       const httpError = 'An Error'
@@ -73,7 +73,7 @@ describe('StorageService', () => {
 
       storageService.getLockAddressesForUser(user)
 
-      storageService.on(failure.getLockAddressesForUser, (error) => {
+      storageService.on(failure.getLockAddressesForUser, error => {
         expect(error).toBe(httpError)
         done()
       })

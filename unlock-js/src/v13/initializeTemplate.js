@@ -4,7 +4,7 @@ import { ZERO } from '../constants'
  * Initialize a lock (will be called on the template only)
  * @param {PropTypes.contract} contract
  */
-export default async function ({ templateAddress }, callback) {
+export default async function({ templateAddress }, callback) {
   const signer = this.provider.getSigner()
   const owner = await signer.getAddress()
   const expirationDuration = 0

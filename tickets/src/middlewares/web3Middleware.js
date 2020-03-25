@@ -11,7 +11,7 @@ import { StorageService, success } from '../services/storageService'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
-const web3Middleware = (config) => {
+const web3Middleware = config => {
   const {
     readOnlyProvider,
     unlockAddress,
@@ -30,13 +30,13 @@ const web3Middleware = (config) => {
     const storageService = new StorageService(services.storage.host)
 
     // Get the lock details from chain
-    storageService.on(success.getLockAddressesForUser, (addresses) => {
-      addresses.forEach((address) => {
+    storageService.on(success.getLockAddressesForUser, addresses => {
+      addresses.forEach(address => {
         web3Service.getLock(address)
       })
     })
 
-    web3Service.on('error', (error) => {
+    web3Service.on('error', error => {
       dispatch(setError(error.message))
     })
 
@@ -61,14 +61,14 @@ const web3Middleware = (config) => {
       }
     }
 
-    return function (next) {
+    return function(next) {
       setTimeout(() => {
         if (lockAddress) {
           web3Service.getLock(lockAddress)
         }
       }, 0)
 
-      return function (action) {
+      return function(action) {
         next(action)
 
         // note: this needs to be after the reducer has seen it, because refreshAccountBalance
@@ -85,9 +85,9 @@ const web3Middleware = (config) => {
             // Get lock addresses from chain (slow but trusted)...
             web3Service
               .getPastLockCreationsTransactionsForUser(action.account.address)
-              .then((lockCreations) => {
+              .then(lockCreations => {
                 dispatch(doneLoading())
-                lockCreations.forEach((lockCreation) => {
+                lockCreations.forEach(lockCreation => {
                   web3Service.getTransaction(lockCreation.transactionHash)
                 })
               })

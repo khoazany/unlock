@@ -36,7 +36,7 @@ const noLockStore = createUnlockStore({
 const now = new Date('Mar 25 2019 10:00:00')
 
 storiesOf('Create event landing page', module)
-  .addDecorator((getStory) => (
+  .addDecorator(getStory => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
   .add('Create event page', () => {

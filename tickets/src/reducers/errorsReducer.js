@@ -10,7 +10,7 @@ const errorsReducer = (state = initialState, action) => {
   }
 
   if (action.type === SET_ERROR) {
-    if (state.map((error) => error.name).includes(action.error)) return state
+    if (state.map(error => error.name).includes(action.error)) return state
     return [
       ...state,
       {
@@ -25,10 +25,10 @@ const errorsReducer = (state = initialState, action) => {
     if (!action.error) return initialState
 
     // If the error to be reset is not in the list, nothing changes
-    if (!state.find((error) => action.error === error.name)) return state
+    if (!state.find(error => action.error === error.name)) return state
 
     // Otherwise, only push to new state the all the other errors
-    return state.filter((error) => error.name !== action.error)
+    return state.filter(error => error.name !== action.error)
   }
 
   return state

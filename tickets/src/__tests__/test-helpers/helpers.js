@@ -24,7 +24,7 @@ export class Catcher extends React.Component {
   }
 }
 
-export const wrapperMaker = (config) =>
+export const wrapperMaker = config =>
   function wrapper(props) {
     return (
       <Catcher>

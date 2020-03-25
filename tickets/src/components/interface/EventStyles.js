@@ -150,7 +150,7 @@ export const Link = styled.li`
   margin-top: 15px;
   font-weight: 200;
   list-style: none;
-  background: url(${(props) => props.icon}) no-repeat;
+  background: url(${props => props.icon}) no-repeat;
   padding-left: 40px;
 `
 
@@ -178,7 +178,7 @@ export const Form = styled.form`
 `
 
 export const SendButton = styled.input`
-  background-color: ${(props) =>
+  background-color: ${props =>
     props.disabled ? 'var(--grey)' : 'var(--green)'};
   border: none;
   font-size: 16px;
@@ -190,7 +190,7 @@ export const SendButton = styled.input`
   outline: none;
   transition: background-color 200ms ease;
   & :hover {
-    background-color: ${(props) =>
+    background-color: ${props =>
       props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
   }
   height: 60px;

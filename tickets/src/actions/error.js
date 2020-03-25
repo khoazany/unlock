@@ -7,7 +7,7 @@ export const setError = (error, data = {}) => ({
   data,
 })
 
-export const resetError = (error) => ({
+export const resetError = error => ({
   type: RESET_ERROR,
   error,
 })

@@ -126,7 +126,7 @@ describe('Web3Service', () => {
 
   describe('inputsHandlers', () => {
     describe('createLock', () => {
-      it('should emit lock.updated with correctly typed values', async (done) => {
+      it('should emit lock.updated with correctly typed values', async done => {
         expect.assertions(2)
         await versionedNockBeforeEach()
         const sender = '0xsender'
@@ -164,10 +164,10 @@ describe('Web3Service', () => {
       const fakeContractAddress = '0xabc'
       const fakeHash = '0x12345'
 
-      const keySaver = new Promise((resolve) => {
+      const keySaver = new Promise(resolve => {
         resolveKeySaver = resolve
       })
-      const transactionUpdater = new Promise((resolve) => {
+      const transactionUpdater = new Promise(resolve => {
         resolveTransactionUpdater = resolve
       })
 
@@ -428,7 +428,7 @@ describe('Web3Service', () => {
   })
 
   describe('_parseTransactionFromInput', () => {
-    it('should emit transaction.updated with the transaction marked as pending', async (done) => {
+    it('should emit transaction.updated with the transaction marked as pending', async done => {
       expect.assertions(2)
       await versionedNockBeforeEach()
       web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
@@ -454,7 +454,7 @@ describe('Web3Service', () => {
       )
     })
 
-    it('should call the handler if the transaction input can be parsed', async (done) => {
+    it('should call the handler if the transaction input can be parsed', async done => {
       expect.assertions(4)
       await versionedNockBeforeEach()
       web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
@@ -508,7 +508,7 @@ describe('Web3Service', () => {
     const blockNumber = 29
     const defaults = null
 
-    it('should watch the transaction', async (done) => {
+    it('should watch the transaction', async done => {
       expect.assertions(1)
       await versionedNockBeforeEach()
       web3Service._watchTransaction = jest.fn()
@@ -528,7 +528,7 @@ describe('Web3Service', () => {
       )
     })
 
-    it('should emit a transaction.updated event with the right values', async (done) => {
+    it('should emit a transaction.updated event with the right values', async done => {
       expect.assertions(4)
       await versionedNockBeforeEach()
       web3Service._watchTransaction = jest.fn()
@@ -547,7 +547,7 @@ describe('Web3Service', () => {
       )
     })
 
-    it('should invoke parseTransactionFromInput if the defaults include an input value', async (done) => {
+    it('should invoke parseTransactionFromInput if the defaults include an input value', async done => {
       expect.assertions(4)
       await versionedNockBeforeEach()
       web3Service._watchTransaction = jest.fn()
@@ -594,7 +594,7 @@ describe('Web3Service', () => {
       data: input,
     }
 
-    it('should watch the transaction', async (done) => {
+    it('should watch the transaction', async done => {
       expect.assertions(1)
       await versionedNockBeforeEach()
       web3Service._watchTransaction = jest.fn()
@@ -610,7 +610,7 @@ describe('Web3Service', () => {
       web3Service._getPendingTransaction(LockVersion, blockTransaction)
     })
 
-    it('should invoke parseTransactionFromInput', async (done) => {
+    it('should invoke parseTransactionFromInput', async done => {
       expect.assertions(4)
       await versionedNockBeforeEach()
       web3Service._watchTransaction = jest.fn()
@@ -804,7 +804,7 @@ describe('Web3Service', () => {
         web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
       }
 
-      it('should emit a transaction.updated event with 0 confirmations', async (done) => {
+      it('should emit a transaction.updated event with 0 confirmations', async done => {
         expect.assertions(1)
         await nockBeforeEach()
         testsSetup()
@@ -854,7 +854,7 @@ describe('Web3Service', () => {
         web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
       }
 
-      it('should watch the transaction', async (done) => {
+      it('should watch the transaction', async done => {
         expect.assertions(1)
         await versionedNockBeforeEach()
         web3Service.lockContractAbiVersion = jest.fn(() => {
@@ -871,7 +871,7 @@ describe('Web3Service', () => {
         await web3Service.getTransaction(transaction.hash)
       })
 
-      it('should emit a transaction.updated event with the right values', async (done) => {
+      it('should emit a transaction.updated event with the right values', async done => {
         expect.assertions(5)
         await versionedNockBeforeEach()
         web3Service.lockContractAbiVersion = jest.fn(() => {
@@ -915,7 +915,7 @@ describe('Web3Service', () => {
         nock.ethGetTransactionByHash(transaction.hash, blockTransaction)
       }
 
-      it('should mark the transaction as failed if the transaction receipt status is false', async (done) => {
+      it('should mark the transaction as failed if the transaction receipt status is false', async done => {
         expect.assertions(6)
         await versionedNockBeforeEach()
         web3Service.lockContractAbiVersion = jest.fn(() => {
@@ -950,7 +950,7 @@ describe('Web3Service', () => {
         return await web3Service.getTransaction(transaction.hash)
       })
 
-      it('should _parseTransactionLogsFromReceipt with the Unlock abi if the address is one of the Unlock contract', async (done) => {
+      it('should _parseTransactionLogsFromReceipt with the Unlock abi if the address is one of the Unlock contract', async done => {
         expect.assertions(6)
         await versionedNockBeforeEach()
         testsSetup()
@@ -993,7 +993,7 @@ describe('Web3Service', () => {
         await web3Service.getTransaction(transaction.hash)
       })
 
-      it('should _parseTransactionLogsFromReceipt with the Lock abi otherwise', async (done) => {
+      it('should _parseTransactionLogsFromReceipt with the Lock abi otherwise', async done => {
         expect.assertions(6)
         await versionedNockBeforeEach()
         testsSetup()

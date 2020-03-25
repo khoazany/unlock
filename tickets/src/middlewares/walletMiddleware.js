@@ -12,7 +12,7 @@ import { SIGN_DATA, signatureError, signedData } from '../actions/signature'
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
 
-const walletMiddleware = (config) => {
+const walletMiddleware = config => {
   return ({ getState, dispatch }) => {
     const walletService = new WalletService(config)
 
@@ -20,7 +20,7 @@ const walletMiddleware = (config) => {
      * When the network has changed, we need to ensure Unlock has been deployed there and
      * get a new account as well as reset all the reducers
      */
-    walletService.on('network.changed', (networkId) => {
+    walletService.on('network.changed', networkId => {
       // Set the new network, which should also clean up all reducers
       dispatch(setNetwork(networkId))
 
@@ -50,7 +50,7 @@ const walletMiddleware = (config) => {
       })
     })
 
-    walletService.on('account.changed', (account) => {
+    walletService.on('account.changed', account => {
       // If the account is actually different
       if (!getState().account || getState().account.address !== account) {
         dispatch(
@@ -73,12 +73,12 @@ const walletMiddleware = (config) => {
       dispatch(dismissWalletCheck())
     })
 
-    walletService.on('error', (error) => {
+    walletService.on('error', error => {
       dispatch(setError(error.message))
     })
 
-    return function (next) {
-      return function (action) {
+    return function(next) {
+      return function(action) {
         if (action.type === PROVIDER_READY) {
           const provider = config.providers[getState().provider]
           walletService.connect(provider)

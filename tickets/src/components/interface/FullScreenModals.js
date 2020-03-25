@@ -42,7 +42,7 @@ WalletCheckOverlay.defaultProps = {
   waiting: false,
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const {
     walletStatus: { waiting },
   } = state

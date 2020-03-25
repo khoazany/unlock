@@ -88,10 +88,10 @@ describe('Web3Service', () => {
               'Content-Length': data.length,
             },
           }
-          const req = http.request(options, (res) => {
+          const req = http.request(options, res => {
             let responseString = ''
 
-            res.on('data', (data) => {
+            res.on('data', data => {
               responseString += data
               // save all the data from response
             })
@@ -124,7 +124,7 @@ describe('Web3Service', () => {
       expect(addressBalance).toEqual(expectedBalance)
     })
 
-    it('should emit an error on error', async (done) => {
+    it('should emit an error on error', async done => {
       expect.assertions(1)
       await nockBeforeEach({})
       const address = '0x1df62f291b2e969fb0849d99d9ce41e2f137006e'
@@ -133,7 +133,7 @@ describe('Web3Service', () => {
         code: 404,
       })
 
-      web3Service.on('error', (e) => {
+      web3Service.on('error', e => {
         expect(e).toBeInstanceOf(Error)
         done()
       })
@@ -163,7 +163,7 @@ describe('Web3Service', () => {
         })
       })
 
-      web3Service.on('error', (err) => {
+      web3Service.on('error', err => {
         throw err // this is the only way we will see test failures!
       })
 
@@ -202,7 +202,7 @@ describe('Web3Service', () => {
 
       const filter = { a: 'b' }
 
-      web3Service.once('transaction.new', (transactionHash) => {
+      web3Service.once('transaction.new', transactionHash => {
         expect(transactionHash).toEqual(
           '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd'
         )
@@ -443,7 +443,7 @@ describe('Web3Service', () => {
       await nockBeforeEach({})
       web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
       web3Service._getKeyByLockForOwner = jest.fn(() => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           return resolve(100)
         })
       })
@@ -462,7 +462,7 @@ describe('Web3Service', () => {
       await nockBeforeEach({})
       web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
       web3Service._getKeyByLockForOwner = jest.fn(() => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           return resolve(100)
         })
       })
@@ -477,7 +477,7 @@ describe('Web3Service', () => {
   })
 
   describe('_emitKeyOwners', () => {
-    it('resolves the promises and emits keys.page', async (done) => {
+    it('resolves the promises and emits keys.page', async done => {
       expect.assertions(3)
       await nockBeforeEach({})
 
@@ -499,7 +499,7 @@ describe('Web3Service', () => {
 
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',
-      async (method) => {
+      async method => {
         await nockBeforeEach({})
         const args = []
         const result = {}
@@ -520,8 +520,8 @@ describe('Web3Service', () => {
     // for each supported version, let's make sure it implements all methods
     it.each(supportedVersions)(
       'should implement all the required methods',
-      (version) => {
-        versionSpecificLockMethods.forEach((method) => {
+      version => {
+        versionSpecificLockMethods.forEach(method => {
           expect(version[method]).toBeInstanceOf(Function)
         })
       }

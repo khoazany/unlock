@@ -41,7 +41,7 @@ const create = () => {
 
   const handler = web3Middleware(config)(store)
 
-  const invoke = (action) => handler(next)(action)
+  const invoke = action => handler(next)(action)
 
   return { next, invoke, store }
 }

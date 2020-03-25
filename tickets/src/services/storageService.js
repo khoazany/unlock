@@ -30,7 +30,7 @@ export class StorageService extends EventEmitter {
       if (result.data && result.data.locks) {
         this.emit(
           success.getLockAddressesForUser,
-          result.data.locks.map((lock) => lock.address)
+          result.data.locks.map(lock => lock.address)
         )
       } else {
         this.emit(
