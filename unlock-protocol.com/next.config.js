@@ -19,7 +19,7 @@ dotenv.config({
 // NOTE: do not set defaults here!
 // This is a mechanism to ensure that we do not deploy code with missing/wrong
 // environment variables
-let requiredConfigVariables = {
+const requiredConfigVariables = {
   unlockEnv,
   googleAnalyticsId,
   urlBase: process.env.URL_BASE,
@@ -29,12 +29,12 @@ let requiredConfigVariables = {
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
   if (!requiredConfigVariables[configVariableName]) {
-    if (requiredConfigVariables.unlockEnv === 'test') return
-    if (requiredConfigVariables.unlockEnv === 'dev') {
-      return console.error(
-        `The configuration variable ${configVariableName} is falsy.`
-      )
-    }
+    if (requiredConfigVariables.unlockEnv === 'test')
+      if (requiredConfigVariables.unlockEnv === 'dev') {
+        console.error(
+          `The configuration variable ${configVariableName} is falsy.`
+        )
+      }
     throw new Error(
       `The configuration variable ${configVariableName} is falsy.`
     )
@@ -68,7 +68,7 @@ module.exports = withTypescript({
     }
 
     // Our statically-defined pages to export
-    let pages = {
+    const pages = {
       '/': { page: '/home' },
       '/about': { page: '/about' },
       '/jobs': { page: '/jobs' },
