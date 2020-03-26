@@ -18,7 +18,7 @@ export default function Layout({ forContent, title, children }) {
     <Container>
       <Left>
         {!forContent && (
-          <Link href="/">
+          <Link href="/home" as="/">
             <a>
               <RoundedLogo />
             </a>

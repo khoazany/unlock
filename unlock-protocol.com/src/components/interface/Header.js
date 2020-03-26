@@ -34,7 +34,7 @@ export class Header extends React.PureComponent {
     return (
       <TopHeader>
         {forContent ? (
-          <Link href="/">
+          <Link href="/home" as="/">
             <a>
               <WordMarkLogo
                 viewBox="0 0 1200 256"
@@ -46,7 +46,7 @@ export class Header extends React.PureComponent {
         ) : (
           <Title>
             <LogoContainer>
-              <Link href="/">
+              <Link href="/home" as="/">
                 <a>
                   <RoundedLogo size="30px" />
                 </a>

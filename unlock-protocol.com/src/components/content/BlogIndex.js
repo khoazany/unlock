@@ -15,7 +15,7 @@ export const BlogIndex = ({ posts }) => (
       ({ title, authorName, publishDate, slug, description, image }) => (
         <Post key={slug}>
           <NoPhoneIllustration>
-            <Link href={`/blog/${slug}`}>
+            <Link href={`/post?slug=${slug}`} as={`/blog/${slug}`}>
               <a>
                 <Image src={image} />
               </a>
@@ -23,8 +23,8 @@ export const BlogIndex = ({ posts }) => (
           </NoPhoneIllustration>
           <Details>
             <Title>
-              <Link href={`/blog/${slug}`}>
-                <a>{title} </a>
+              <Link href={`/post?slug=${slug}`} as={`/blog/${slug}`}>
+                <a>{title}</a>
               </Link>
             </Title>
             <Description>{description}</Description>

@@ -76,7 +76,6 @@ module.exports = withTypescript({
       '/privacy': { page: '/privacy' },
       '/blog': { page: '/blog' },
     }
-
     return addBlogPagesToPageObject(resolve(dir, '..'), pages)
   },
 })

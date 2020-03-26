@@ -41,28 +41,28 @@ const Blog = ({ posts, page, totalPages }) => {
       <Pagination>
         {page > 1 && (
           <Left>
-            <Link href="/blog/">
+            <Link as="/blog/" href="/blog">
               <a>← First Page</a>
             </Link>
           </Left>
         )}
         {page > 2 && (
           <Left>
-            <Link href={`/blog/${page - 1}`}>
+            <Link as={`/blog/${page - 1}`} href={`/blog?slug=${page - 1}`}>
               <a>│ Previous</a>
             </Link>
           </Left>
         )}
         {page !== totalPages && (
           <Right>
-            <Link href={`/blog/${totalPages}`}>
+            <Link as={`/blog/${totalPages}`} href={`/blog?slug=${totalPages}`}>
               <a>Last Page →</a>
             </Link>
           </Right>
         )}
         {totalPages > page + 1 && (
           <Right>
-            <Link href={`/blog/${page + 1}`}>
+            <Link as={`/blog/${page + 1}`} href={`/blog?slug=${page + 1}`}>
               <a>Next │</a>
             </Link>
           </Right>
