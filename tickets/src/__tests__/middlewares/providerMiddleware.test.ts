@@ -4,11 +4,11 @@ import { SET_PROVIDER } from '../../actions/provider'
 const config = {
   providers: {
     UNLOCK: {
-      enable: jest.fn(() => new Promise((resolve) => resolve(true))),
+      enable: jest.fn(() => new Promise(resolve => resolve(true))),
       isUnlock: true,
     },
     NUNLOCK: {
-      enable: jest.fn(() => new Promise((resolve) => resolve(true))),
+      enable: jest.fn(() => new Promise(resolve => resolve(true))),
     },
   },
 }
@@ -32,15 +32,15 @@ let dispatch: () => any
 describe('provider middleware', () => {
   beforeEach(() => {
     config.providers.UNLOCK.enable = jest.fn(
-      () => new Promise((resolve) => resolve(true))
+      () => new Promise(resolve => resolve(true))
     )
     config.providers.NUNLOCK.enable = jest.fn(
-      () => new Promise((resolve) => resolve(true))
+      () => new Promise(resolve => resolve(true))
     )
     dispatch = jest.fn()
   })
   describe('SET_PROVIDER', () => {
-    it('should initialize the provider when provider is different from one in state', (done) => {
+    it('should initialize the provider when provider is different from one in state', done => {
       expect.assertions(2)
       const next = () => {
         expect(config.providers.UNLOCK.enable).toHaveBeenCalled()
@@ -51,7 +51,7 @@ describe('provider middleware', () => {
       providerMiddleware(config)({ getState, dispatch })(next)(unlockAction)
     })
 
-    it('should set an error and return if the call to enable fails', (done) => {
+    it('should set an error and return if the call to enable fails', done => {
       expect.assertions(2)
       config.providers.UNLOCK.enable = jest.fn(() => {
         // eslint-disable-next-line promise/param-names
@@ -69,7 +69,7 @@ describe('provider middleware', () => {
       providerMiddleware(config)({ getState, dispatch })(next)(unlockAction)
     })
 
-    it('should do nothing if provider is the same as in state', (done) => {
+    it('should do nothing if provider is the same as in state', done => {
       expect.assertions(3)
       const next = () => {
         expect(config.providers.UNLOCK.enable).not.toHaveBeenCalled()
